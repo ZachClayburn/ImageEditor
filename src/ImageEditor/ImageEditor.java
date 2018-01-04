@@ -1,3 +1,7 @@
+package ImageEditor;
+
+import ImageEditor.ImageArray;
+
 public class ImageEditor {
 
     public static void main (String[] args) {
@@ -29,11 +33,7 @@ public class ImageEditor {
             return;
         }
 
-        new ImageEditor(inFileName, outFileName, filterName, blurLength);
-    }
-
-    public ImageEditor(String inFileName, String outFileName, String filterType, int blurLength){
-
+        ImageArray imageArray = new ImageArray(inFileName);
     }
 
     private static void printUsage(){
