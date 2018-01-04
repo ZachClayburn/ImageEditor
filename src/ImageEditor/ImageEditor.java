@@ -34,6 +34,8 @@ public class ImageEditor {
         }
 
         ImageArray imageArray = new ImageArray(inFileName);
+
+        imageArray.writeOutput(outFileName);
     }
 
     private static void printUsage(){

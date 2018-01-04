@@ -1,7 +1,9 @@
 package ImageEditor;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -49,6 +51,29 @@ class ImageArray {
     }
 
     void writeOutput(String outFileName){
+        Path outFilePath = Paths.get(outFileName);
+        try {
+            Files.createFile(outFilePath);//todo Fix FileAlreadyExistsException
+            PrintWriter out = new PrintWriter(Files.newBufferedWriter(outFilePath, StandardCharsets.UTF_8));
+            out.println("P3");
+            out.println("#Created using ImageEditor by Zach Clayburn");
+            Integer w = width;
+            Integer h = height;
+            out.println(w.toString() + " " + h.toString());
+            out.println(maxValue);
+
+            for(int col = 0; col < width; col++) {
+                for (int row = 0; row < height; row++) {
+                    out.println(red[col][row]);
+                    out.println(green[col][row]);
+                    out.println(blue[col][row]);
+                }
+            }
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
