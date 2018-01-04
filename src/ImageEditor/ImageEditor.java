@@ -35,7 +35,27 @@ public class ImageEditor {
 
         ImageArray imageArray = new ImageArray(inFileName);
 
-        imageArray.writeOutput(outFileName);
+        ImageArray filtered;
+        switch (filterName){
+            case "invert":{
+                filtered = imageArray.invert();
+            }break;
+            case "grayscale":{
+                filtered = imageArray.graycsale();
+            }break;
+            case "emboss":{
+                filtered = imageArray.emboss();
+            }break;
+            case "motionblur":{
+                filtered = imageArray.motionBlur(blurLength);
+            }break;
+            default:{
+                printUsage();
+                return;
+            }
+        }
+
+        filtered.writeOutput(outFileName);
     }
 
     private static void printUsage(){
