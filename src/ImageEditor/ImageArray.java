@@ -63,8 +63,8 @@ class ImageArray {
     ImageArray invert(){
         ImageArray filtered = new ImageArray(width,height,maxValue);
 
-        for(int col = 0; col < width; col++) {
-            for (int row = 0; row < height; row++) {
+        for (int row = 0; row < height; row++) {
+            for(int col = 0; col < width; col++) {
                 filtered.red[col][row] = maxValue - red[col][row];
                 filtered.green[col][row] = maxValue - green[col][row];
                 filtered.blue[col][row] = maxValue - blue[col][row];
@@ -76,8 +76,8 @@ class ImageArray {
     ImageArray graycsale(){
         ImageArray filtered = new ImageArray(width,height,maxValue);
 
-        for(int col = 0; col < width; col++) {
-            for (int row = 0; row < height; row++) {
+        for (int row = 0; row < height; row++) {
+            for(int col = 0; col < width; col++) {
                 int average = (red[col][row] + green[col][row] + blue[col][row]) / 3;
                 filtered.red[col][row] = average;
                 filtered.green[col][row] = average;
@@ -91,8 +91,8 @@ class ImageArray {
         ImageArray filtered = new ImageArray(width,height,maxValue);
         int baseAmount = maxValue - (maxValue / 2);
 
-        for(int col = 0; col < width; col++) {
-            for (int row = 0; row < height; row++) {
+        for (int row = 0; row < height; row++) {
+            for(int col = 0; col < width; col++) {
                 if(row == 0 || col == 0){
                     filtered.red[col][row] = baseAmount;
                     filtered.green[col][row] = baseAmount;
@@ -155,8 +155,8 @@ class ImageArray {
             out.println(w.toString() + " " + h.toString());
             out.println(maxValue);
 
-            for(int col = 0; col < width; col++) {
-                for (int row = 0; row < height; row++) {
+            for (int row = 0; row < height; row++) {
+                for(int col = 0; col < width; col++) {
                     out.println(red[col][row]);
                     out.println(green[col][row]);
                     out.println(blue[col][row]);
@@ -183,8 +183,8 @@ class ImageArray {
 
     private void fillArray(Scanner in){
         String next;
-        for(int col = 0; col < width; col++){
-            for(int row = 0; row < height; row++){
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col++){
                 next = getNext(in);
                 red[col][row]= Integer.parseInt(next);
 
