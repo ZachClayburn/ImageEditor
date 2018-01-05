@@ -3,10 +3,12 @@ package ImageEditor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.lang.Math;
 
 class ImageArray {
 
@@ -87,12 +89,39 @@ class ImageArray {
 
     ImageArray emboss(){
         ImageArray filtered = new ImageArray(width,height,maxValue);
+        int baseAmount = maxValue - (maxValue / 2);
 
         for(int col = 0; col < width; col++) {
             for (int row = 0; row < height; row++) {
-                filtered.red[col][row] = red[col][row];
-                filtered.green[col][row] = green[col][row];
-                filtered.blue[col][row] = blue[col][row];
+                if(row == 0 || col == 0){
+                    filtered.red[col][row] = baseAmount;
+                    filtered.green[col][row] = baseAmount;
+                    filtered.blue[col][row] = baseAmount;
+
+                }else {
+                    int redDif = red[col][row] - red[col-1][row-1];
+                    int greenDif = green[col][row] - green[col-1][row-1];
+                    int blueDif = blue[col][row] - blue[col-1][row-1];
+
+                    int maxDiff;
+                    if(Math.abs(redDif) == Math.abs(greenDif)){
+                        maxDiff = redDif;
+                    }else {
+                        maxDiff = (Math.abs(redDif) > Math.abs(greenDif)) ? redDif : greenDif;
+                    }
+                    if(Math.abs(maxDiff) != Math.abs(blueDif)){
+                        maxDiff = (Math.abs(maxDiff) > Math.abs(blueDif)) ? maxDiff : blueDif;
+                    }
+
+                    int newValue = baseAmount + maxDiff;
+
+                    newValue = (newValue > maxValue) ? maxValue : newValue;
+                    newValue = (newValue < 0) ? 0 : newValue;
+
+                    filtered.red[col][row] = newValue;
+                    filtered.green[col][row] = newValue;
+                    filtered.blue[col][row] = newValue;
+                }
             }
         }
                 return filtered;
@@ -115,7 +144,9 @@ class ImageArray {
     void writeOutput(String outFileName){
         Path outFilePath = Paths.get(outFileName);
         try {
-            Files.createFile(outFilePath);//todo Fix FileAlreadyExistsException
+            try {
+                Files.createFile(outFilePath);//todo Fix FileAlreadyExistsException
+            }catch (FileAlreadyExistsException ignored){            }
             PrintWriter out = new PrintWriter(Files.newBufferedWriter(outFilePath, StandardCharsets.UTF_8));
             out.println("P3");
             out.println("#Created using ImageEditor by Zach Clayburn");
