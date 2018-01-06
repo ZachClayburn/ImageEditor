@@ -127,14 +127,28 @@ class ImageArray {
                 return filtered;
     }
 
-    ImageArray motionBlur(int blurAmmount){
+    ImageArray motionBlur(int n){
         ImageArray filtered = new ImageArray(width,height,maxValue);
 
-        for(int col = 0; col < width; col++) {
-            for (int row = 0; row < height; row++) {
-                filtered.red[col][row] = red[col][row];
-                filtered.green[col][row] = green[col][row];
-                filtered.blue[col][row] = blue[col][row];
+        for (int row = 0; row < height; row++) {
+            for(int col = 0; col < width; col++) {
+                int offset = col + n - 1;
+                offset = (offset > width-1) ? width-1 : offset;
+
+                int count = 0;
+                int redSum = 0;
+                int greenSum = 0;
+                int blueSum = 0;
+                for (int i = col; i <= offset; i++){
+                    redSum += red[i][row];
+                    greenSum += green[i][row];
+                    blueSum += blue[i][row];
+                    count++;
+                }
+
+                filtered.red[col][row] = redSum / count;
+                filtered.green[col][row] = greenSum / count;
+                filtered.blue[col][row] = blueSum / count;
             }
         }
                 return filtered;
